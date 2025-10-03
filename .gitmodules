@@ -1,6 +1,6 @@
 [submodule "excalidraw"]
     path = ./excalidraw
-    url = https://github.com/excalidraw/excalidraw.git
+    url = https://github.com/maddymontaquila/excalidraw.git
 [submodule "excalidraw-room"]
     path = ./excalidraw-room
-    url = https://github.com/excalidraw/excalidraw-room.git
+    url = https://github.com/maddymontaquila/excalidraw-room.git
