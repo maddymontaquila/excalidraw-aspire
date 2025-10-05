@@ -1,8 +1,8 @@
 [submodule "excalidraw"]
-    path = ./excalidraw
-    url = https://github.com/maddymontaquila/excalidraw.git
-    branch = maddy/aspire
+	path = excalidraw
+	url = https://github.com/maddymontaquila/excalidraw.git
+	branch = maddy/aspire
 [submodule "excalidraw-room"]
-    path = ./excalidraw-room
-    url = https://github.com/maddymontaquila/excalidraw-room.git
-    branch = maddy/aspire
+	path = excalidraw-room
+	url = https://github.com/maddymontaquila/excalidraw-room.git
+	branch = maddy/aspire
