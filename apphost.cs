@@ -38,27 +38,17 @@ if (builder.ExecutionContext.IsRunMode)
         .WithReference(app);
 
     var tcs = new TaskCompletionSource<EndpointReference>(TaskCreationOptions.RunContinuationsAsynchronously);
+
     #region Workaround Fowler's lapse of judgement
-    builder.Eventing.Subscribe<ResourceEndpointsAllocatedEvent>(async (e, ct) =>
-    {
-        var logger = e.Services.GetRequiredService<ResourceLoggerService>().GetLogger(e.Resource);
-        logger.LogDebug("Resource endpoints allocated for {resourceName}", e.Resource.Name);
 
-        if (e.Resource is DevTunnelPortResource portResource)
-        {
-            // excalidraw-tunnel-2-excalidraw-http
-            var portResourceName = $"{devTunnel.Resource.Name}-{collabServer.Resource.Name}-http";
-            if (!string.Equals(portResource.Name, portResourceName, StringComparison.OrdinalIgnoreCase))
-            {
-                logger.LogDebug("Skipping tunnel port endpoint for resource {resourceName}", portResource.Name);
-                return;
-            }
+    var portResourceName = $"{devTunnel.Resource.Name}-{collabServer.Resource.Name}-http";
+    builder.CreateResourceBuilder<DevTunnelPortResource>(portResourceName)
+           .OnResourceEndpointsAllocated((resource, evt, ct) =>
+           {
+               tcs.TrySetResult(resource.GetEndpoint("tunnel"));
+               return Task.CompletedTask;
+           });
 
-            var portEndpoint = portResource.GetEndpoint("tunnel");
-            logger.LogDebug("Tunnel port resource endpoint: {endpoint}", portEndpoint.Url);
-            tcs.SetResult(portEndpoint);
-        }
-    });
     #endregion
 
     app.WithEnvironment(async c =>
